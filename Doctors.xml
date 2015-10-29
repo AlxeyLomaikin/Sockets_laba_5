@@ -30,5 +30,22 @@
 <occupation>athehta</occupation>
 <age>333</age>
 </doctor>
-
+<doctor id="6">
+<name>thrhwt</name>
+<surname>rwhhrw</surname>
+<occupation>hrwwry</occupation>
+<age>111</age>
+</doctor>
+<doctor id="7">
+<name>rhyw</name>
+<surname>hwrywhr</surname>
+<occupation>hwyr</occupation>
+<age>555</age>
+</doctor>
+<doctor id="8">
+<name>hn</name>
+<surname>nnrwhy</surname>
+<occupation>nhrwrh</occupation>
+<age>444</age>
+</doctor>
 </Doctors>

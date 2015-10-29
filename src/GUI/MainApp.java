@@ -66,11 +66,13 @@ public class MainApp extends Application {
     }
 
     void App_exit (){
-        try{
-            in.close();
-            out.close();
-            server.close();
-        }catch (IOException e){}
+        if (server!=null){
+            try{
+                in.close();
+                out.close();
+                server.close();
+            }catch (IOException e){}
+        }
         System.exit(0);
     }
 
