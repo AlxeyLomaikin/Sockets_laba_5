@@ -38,7 +38,7 @@ public class MainApp extends Application {
 
     //Add/Edit/Delete Errors on server
     private SimpleStringProperty Error = new SimpleStringProperty(null);
-    private ChangeListener<String> listener =  listener = new ChangeListener<String>() {
+    private ChangeListener<String> erlistener = new ChangeListener<String>() {
         @Override
         public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
             if (!(newValue).equals(oldValue)) {
@@ -68,6 +68,7 @@ public class MainApp extends Application {
     void App_exit (){
         if (server!=null){
             try{
+                Error.removeListener(erlistener);
                 in.close();
                 out.close();
                 server.close();
@@ -83,6 +84,7 @@ public class MainApp extends Application {
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(server
                     .getOutputStream())), true);
             in = new BufferedReader(new InputStreamReader(server.getInputStream()));
+            //reading data from server
             out.println("getAll");
             String answer = in.readLine();
             //server is down
@@ -142,7 +144,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         if (ConnectToServer()) {
             //start thread to communicate with server
-            Error.addListener(listener);
+            Error.addListener(erlistener);
             new ClientThread(server, this).start();
             this.primaryStage = primaryStage;
             this.primaryStage.setTitle("Doctors List");
@@ -151,6 +153,7 @@ public class MainApp extends Application {
                 @Override
                 public void handle(WindowEvent event) {
                     try {
+                        Error.removeListener(erlistener);
                         in.close();
                         out.close();
                         server.close();
