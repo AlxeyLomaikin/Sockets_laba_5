@@ -22,12 +22,6 @@ public class ClientThread extends Thread{
         this.mainApp = mainApp;
     }
 
-    void showErrorMessage (String message){
-        ArrayList<String> error = new ArrayList<String>();
-        error.add(message);
-        new ErrorMessageStage(error, mainApp.getPrimaryStage());
-    }
-
     //mask: "UpdateDelData_id"
     private void handleUPD_DELPacket (String[] spl){
         try{
@@ -69,6 +63,7 @@ public class ClientThread extends Thread{
 
     private void handleIncomingMessage (String message) {
         if (message != null) {
+            mainApp.getError().set("-");
             String[] spl = message.split("_");
             switch (spl[0]) {
                 case EventBase.UPD_ADD:
@@ -81,16 +76,16 @@ public class ClientThread extends Thread{
                     handleUPD_EditPacket(spl);
                     break;
                 case EventBase.ADD_FAIL:
-                    showErrorMessage("Add Failed");
+                    mainApp.getError().set("Add Failed");
                     break;
                 case EventBase.DEL_FAIL:
-                    showErrorMessage("Delete Failed");
+                    mainApp.getError().set("Delete Failed");
                     break;
                 case EventBase.EDIT_FAIL:
-                    showErrorMessage("Edit Failed");
+                    mainApp.getError().set("Edit Failed");
                     break;
                 default:
-                    showErrorMessage("Incorrect Request of Packet from Client");
+                    mainApp.getError().set("Incorrect Request of Packet from Client");
                     break;
             }
         }

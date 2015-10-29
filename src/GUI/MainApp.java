@@ -1,7 +1,12 @@
 package GUI;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -13,6 +18,7 @@ import model.doctor;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by User on 27.10.2015.
@@ -28,6 +34,28 @@ public class MainApp extends Application {
     private SimpleBooleanProperty WasDataChanged = new SimpleBooleanProperty();
     public SimpleBooleanProperty getWasDataChanged() {
         return this.WasDataChanged;
+    }
+
+    //Add/Edit/Delete Errors on server
+    private SimpleStringProperty Error = new SimpleStringProperty(null);
+    private ChangeListener<String> listener =  listener = new ChangeListener<String>() {
+        @Override
+        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            if (!(newValue).equals(oldValue)) {
+                if (!newValue.equals("-"))
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<String> error = new ArrayList<String>();
+                        error.add(Error.getValue());
+                        new ErrorMessageStage(error, primaryStage);
+                    }
+                });
+            }
+        }
+    };
+    public SimpleStringProperty getError(){
+        return this.Error;
     }
 
     public ObservableList<doctor> getDoctors() {
@@ -112,6 +140,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         if (ConnectToServer()) {
             //start thread to communicate with server
+            Error.addListener(listener);
             new ClientThread(server, this).start();
             this.primaryStage = primaryStage;
             this.primaryStage.setTitle("Doctors List");

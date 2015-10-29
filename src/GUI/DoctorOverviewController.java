@@ -20,7 +20,7 @@ import java.net.Socket;
  */
 public class DoctorOverviewController {
 
-    private TableView doctorTable;
+    private TableView<doctor> doctorTable;
     private StackPane stackpane;
     private TableColumn IDCol;
     private TableColumn nameCol;
