@@ -36,12 +36,7 @@
 <occupation>egn</occupation>
 <age>55555</age>
 </doctor>
-<doctor id="7">
-<name>erg</name>
-<surname>eg</surname>
-<occupation>er</occupation>
-<age>674</age>
-</doctor>
+
 
 
 </Doctors>

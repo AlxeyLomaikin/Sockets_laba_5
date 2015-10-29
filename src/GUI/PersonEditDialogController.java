@@ -185,7 +185,7 @@ public class PersonEditDialogController {
         if (errorMessages.size() == 0) {
             return true;
         } else {
-           //show stage with errors list
+            //show stage with errors list
             new ErrorMessageStage(errorMessages, dialogStage);
             return false;
         }

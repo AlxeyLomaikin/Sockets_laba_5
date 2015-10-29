@@ -1,8 +1,6 @@
 package GUI;
 
 import Server.ClientWorker;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -38,11 +36,6 @@ public class DoctorOverviewController {
 
     public DoctorOverviewController() {
         initialize();
-    }
-
-    //update data on client when server's data will be changed
-    public void Update () {
-        mainApp.getWasDataChanged().set(true);
     }
 
     private void initialize() {
@@ -112,7 +105,7 @@ public class DoctorOverviewController {
                             out.println("edit" + "_" + ClientWorker.decodeToString(tmpDoc));
                         }catch(IOException IO){
                             System.out.println("Connection error!");
-                           mainApp.App_exit();
+                            mainApp.App_exit();
                         }
                     }
                 }
