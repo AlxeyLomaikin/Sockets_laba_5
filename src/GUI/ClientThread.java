@@ -23,7 +23,6 @@ public class ClientThread extends Thread{
         this.mainApp = mainApp;
     }
 
-    //mask: "UpdateDelData_id"
     private void handleUPD_DELPacket (){
         try{
             int id = (int)in.readObject();
@@ -32,7 +31,6 @@ public class ClientThread extends Thread{
         } catch(IOException | ClassNotFoundException | ArrayIndexOutOfBoundsException e){}
     }
 
-    //mask:  "UpdateAddData_id_name_surname_occupation_age"
     private void handleUPD_ADDPacket (){
         try{
             doctor doc = (doctor)in.readObject();
@@ -41,7 +39,6 @@ public class ClientThread extends Thread{
         }catch(IOException | ClassNotFoundException e){}
     }
 
-    //mask:  "UpdateEditData_id_name_surname_occupation_age"
     private void handleUPD_EditPacket (){
         try{
             doctor doc = (doctor)in.readObject();

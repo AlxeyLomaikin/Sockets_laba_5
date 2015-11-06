@@ -18,15 +18,11 @@ public class ClientWorker extends Thread{
     }
 
     private void SendMesToClient (Socket client, String message)throws IOException{
-        //Auto clean buffer in out
         out = new ObjectOutputStream(client
                 .getOutputStream());
         out.writeObject(message);
     }
 
-
-    //mask : "add_id_name_surname_occupation_age"
-    //example of correct packet: "add_0_Alex_Fisher_staff_31"
     private void handleAddPacket () throws IOException{
         try {
             doctor doc = (doctor)in.readObject();
@@ -44,8 +40,6 @@ public class ClientWorker extends Thread{
         }
     }
 
-    //mask : "delElement_id"
-    //example of correct packet: "delElement_12"
     private void handleDelPacket ()throws IOException{
             try {
                 int ID = (int)in.readObject();
@@ -62,18 +56,13 @@ public class ClientWorker extends Thread{
             }
     }
 
-    //mask: "getAll"
-    //example packet: "getAll"
     private void handleGetAllPacket ()throws IOException{
-        //answer packet: getAllAnswer_11_Alex_Fisher_oculist_33_12_Alex_Drug_oculist_35...
         synchronized (servImpl) {
             SendMesToClient(this.client, "getAllAnswer");
             out.writeObject(servImpl.getData());
             }
         }
 
-    //mask: edit_id_name_surname_occupation_age
-    //example of correct packet: edit_21_Alex_Fisher_staff_31
     private void handleEditPacket () throws IOException{
             try {
                 doctor doc = (doctor)in.readObject();
@@ -128,7 +117,7 @@ public class ClientWorker extends Thread{
         }
         finally{
             try{
-                synchronized(servImpl.getClients()){
+                synchronized(servImpl.getClients()) {
                     servImpl.getClients().remove(client);
                 }
                 String clientAdr = client.getInetAddress()+":" +client.getPort();
