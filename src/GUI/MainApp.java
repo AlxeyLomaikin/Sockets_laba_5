@@ -24,8 +24,8 @@ import java.util.ArrayList;
  * Created by User on 27.10.2015.
  */
 public class MainApp extends Application {
-    private BufferedReader in = null;
-    private PrintWriter out = null;
+    private ObjectInputStream in = null;
+    private ObjectOutputStream out = null;
     private Socket server = null;
     private Stage primaryStage;
     private ObservableList<doctor> doctors = FXCollections.observableArrayList();
@@ -43,14 +43,14 @@ public class MainApp extends Application {
         public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
             if (!(newValue).equals(oldValue)) {
                 if (!newValue.equals("-"))
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        ArrayList<String> error = new ArrayList<String>();
-                        error.add(Error.getValue());
-                        new ErrorMessageStage(error, primaryStage);
-                    }
-                });
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            ArrayList<String> error = new ArrayList<String>();
+                            error.add(Error.getValue());
+                            new ErrorMessageStage(error, primaryStage);
+                        }
+                    });
             }
         }
     };
@@ -81,41 +81,24 @@ public class MainApp extends Application {
         boolean success = false;
         try {
             server = new Socket(InetAddress.getByName(null), 1099);
-            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(server
-                    .getOutputStream())), true);
-            in = new BufferedReader(new InputStreamReader(server.getInputStream()));
+            out = new ObjectOutputStream(server
+                    .getOutputStream());
             //reading data from server
-            out.println("getAll");
-            String answer = in.readLine();
+            out.writeObject("getAll");
+            in = new ObjectInputStream(server.getInputStream());
+            String answer = (String)in.readObject();
             //server is down
-            if (answer!=null) {
-                //Correct packets:
-                //getAllAnswer_0
-                // getAllAnswer_sizeOfData_id_name_surname_occupation_age_id...
-                String[] spl = answer.split("_");
-                if (spl[0].equals("getAllAnswer") && spl.length > 1) {
-                    int sizeOfData = Integer.parseInt(spl[1]);
-                    int idxOfLastStr = 1 + sizeOfData * 5;
-                    //checking the correctness of packet
-                    if (spl.length == (idxOfLastStr + 1)) {
-                        for (int i = 0; i < sizeOfData; i++) {
-                            int ID = Integer.parseInt(spl[2 + i * 5]);
-                            String Name = spl[3 + i * 5];
-                            String Surname = spl[4 + i * 5];
-                            String occupation = spl[5 + i * 5];
-                            int age = Integer.parseInt(spl[6 + i * 5]);
-                            doctor doc = new doctor(Name, Surname, occupation, age);
-                            doc.setID(ID);
-                            this.doctors.add(doc);
-                        }
-                        success = true;
-                    }
-                    else success = false;
+            if (answer!=null){
+                if (answer.equals("getAllAnswer")){
+                  ArrayList<doctor> data = (ArrayList<doctor>)in.readObject();
+                    doctors.setAll(data);
+                    success = true;
                 }
                 else success = false;
+
             }
             else success = false;
-        }catch (IOException | NumberFormatException e){
+        }catch (IOException | ClassNotFoundException e){
             success = false;
         }
         return success;

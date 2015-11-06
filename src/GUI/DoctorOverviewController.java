@@ -31,8 +31,8 @@ public class DoctorOverviewController {
     //link to MainApp
     private MainApp mainApp = null;
     private Socket server = null;
-    private BufferedReader in = null;
-    private PrintWriter out = null;
+    private ObjectInputStream in = null;
+    private ObjectOutputStream out = null;
 
     public DoctorOverviewController() {
         initialize();
@@ -73,9 +73,10 @@ public class DoctorOverviewController {
                         //id of selected doctor
                         int selectedID = mainApp.getDoctors().get(selectedIndex).getID();
                         //delete doctor from server
-                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(server
-                                .getOutputStream())), true);
-                        out.println("delElement" + "_" + String.valueOf(selectedID));
+                        out = new ObjectOutputStream((server
+                                .getOutputStream()));
+                        out.writeObject("delElement");
+                        out.writeObject(selectedID);
                     }
                     catch (IOException e){
                         System.out.println("Connection error!");
@@ -100,9 +101,10 @@ public class DoctorOverviewController {
                     //if botton "Ok" was clicked
                     if (okClicked) {
                         try{
-                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(server
-                                    .getOutputStream())), true);
-                            out.println("edit" + "_" + ClientWorker.decodeToString(tmpDoc));
+                            out = new ObjectOutputStream((server
+                                    .getOutputStream()));
+                            out.writeObject("edit");
+                            out.writeObject(tmpDoc);
                         }catch(IOException IO){
                             System.out.println("Connection error!");
                             mainApp.App_exit();
@@ -124,9 +126,10 @@ public class DoctorOverviewController {
                 if (okClicked) {
                     try {
                         //add doctor on server
-                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(server
-                                .getOutputStream())), true);
-                        out.println("add" + "_" + ClientWorker.decodeToString(tmpDoc));
+                        out = new ObjectOutputStream((server
+                                .getOutputStream()));
+                        out.writeObject("add");
+                        out.writeObject(tmpDoc);
                     } catch (IOException e) {
                         System.out.println("Connection error!");
                         mainApp.App_exit();
