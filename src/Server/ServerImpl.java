@@ -158,61 +158,66 @@ public class ServerImpl {
 
     public ArrayList<doctor> findByAll(String id, String name, String surname,
                                        String occ, String age) {
-        //введеное поле не пусто
-        boolean b1 = !((id == null) || (id.length() == 0));
-        boolean b2 = !((name == null) || (name.length() == 0));
-        boolean b3 = !((surname == null) || (surname.length() == 0));
-        boolean b4 = !((occ == null) || (occ.length() == 0));
-        boolean b5 = !((age == null) || (age.length() == 0));
-        ArrayList<doctor>FoundDoctors = new ArrayList<doctor>();
+        ArrayList<doctor> FoundDoctors = new ArrayList<doctor>();
         FoundDoctors.addAll(doctors);
-        //Поиск по id
-        if (b1) {
-            for (int k = 0; k < FoundDoctors.size(); k++) {
-                if (FoundDoctors.get(k).getID() != Integer.parseInt(id)) {
-                    FoundDoctors.remove(k);
-                    k--;
+        try {
+            //введеное поле не пусто
+            boolean b1 = !((id == null) || (id.length() == 0));
+            boolean b2 = !((name == null) || (name.length() == 0));
+            boolean b3 = !((surname == null) || (surname.length() == 0));
+            boolean b4 = !((occ == null) || (occ.length() == 0));
+            boolean b5 = !((age == null) || (age.length() == 0));
+            //Поиск по id
+            if (b1) {
+                for (int k = 0; k < FoundDoctors.size(); k++) {
+                    if (FoundDoctors.get(k).getID() != Integer.parseInt(id)) {
+                        FoundDoctors.remove(k);
+                        k--;
+                    }
                 }
             }
-        }
-        //Поиск по имени
-        if (b2) {
-            for (int k = 0; k < FoundDoctors.size(); k++) {
-                if (!FoundDoctors.get(k).getName().equals(name)) {
-                    FoundDoctors.remove(k);
-                    k--;
+            //Поиск по имени
+            if (b2) {
+                for (int k = 0; k < FoundDoctors.size(); k++) {
+                    if (!FoundDoctors.get(k).getName().equals(name)) {
+                        FoundDoctors.remove(k);
+                        k--;
+                    }
                 }
             }
-        }
-        //Поиск по фамилии
-        if (b3) {
-            for (int k = 0; k < FoundDoctors.size(); k++) {
-                if (!FoundDoctors.get(k).getSurname().equals(surname)) {
-                    FoundDoctors.remove(k);
-                    k--;
+            //Поиск по фамилии
+            if (b3) {
+                for (int k = 0; k < FoundDoctors.size(); k++) {
+                    if (!FoundDoctors.get(k).getSurname().equals(surname)) {
+                        FoundDoctors.remove(k);
+                        k--;
+                    }
                 }
             }
-        }
-        //Поиск по профессии
-        if (b4) {
-            for (int k = 0; k < FoundDoctors.size(); k++) {
-                if (!(FoundDoctors.get(k).getOccupation().equals(occ))) {
-                    FoundDoctors.remove(k);
-                    k--;
+            //Поиск по профессии
+            if (b4) {
+                for (int k = 0; k < FoundDoctors.size(); k++) {
+                    if (!(FoundDoctors.get(k).getOccupation().equals(occ))) {
+                        FoundDoctors.remove(k);
+                        k--;
+                    }
                 }
             }
-        }
-        //Поиск по возрасту
-        if (b5) {
-            for (int k = 0; k < FoundDoctors.size(); k++) {
-                if (FoundDoctors.get(k).getAge() != Integer.parseInt(age)) {
-                    FoundDoctors.remove(k);
-                    k--;
-                }
+            //Поиск по возрасту
+            if (b5) {
+                for (int k = 0; k < FoundDoctors.size(); k++) {
+                    if (FoundDoctors.get(k).getAge() != Integer.parseInt(age)) {
+                        FoundDoctors.remove(k);
+                        k--;
+                    }
 
+                }
             }
+        }catch (NumberFormatException n){
         }
-        return FoundDoctors;
+       finally {
+            return FoundDoctors;
+        }
     }
 
     //Удаление объекта
