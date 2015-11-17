@@ -89,7 +89,7 @@ public class MainApp extends Application {
             //server is down
             if (answer!=null){
                 if (answer.equals("getAllAnswer")){
-                  ArrayList<doctor> data = (ArrayList<doctor>)in.readObject();
+                    ArrayList<doctor> data = (ArrayList<doctor>)in.readObject();
                     doctors.setAll(data);
                     success = true;
                 }
@@ -163,7 +163,9 @@ public class MainApp extends Application {
     // button "OK" was clicked
     public boolean showPersonEditDialog(doctor tmpDoctor) {
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Edit/Add Doctor");
+        if (tmpDoctor.getID()==0)
+            dialogStage.setTitle("Add Doctor");
+        else dialogStage.setTitle("Edit Doctor");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         //set object to add/edit and created window in controller
