@@ -65,15 +65,20 @@ public class MainApp extends Application {
     }
 
     void App_exit (){
-        if (server!=null){
-            try{
-                Error.removeListener(erlistener);
-                in.close();
-                out.close();
-                server.close();
-            }catch (IOException e){}
-        }
-        System.exit(0);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if (server!=null){
+                    try{
+                        Error.removeListener(erlistener);
+                        in.close();
+                        out.close();
+                        server.close();
+                    }catch (IOException e){}
+                }
+                System.exit(0);
+            }
+        });
     }
 
     private boolean ConnectToServer() {
